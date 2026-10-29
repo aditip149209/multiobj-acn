@@ -1,0 +1,24 @@
+# 9 evaluation scenarios (mapping from the plan in Sec. V-B of the report).
+# Fields map 1:1 onto CLI args of sim/nrsim (stand-in) and ns3-nr/scratch/nr-multiobj-scenario.cc.
+common:
+  txPowerDbm: 30        # gNB conducted power (dBm); +10 dB array gain in both back-ends
+  bandwidthMHz: 100     # 273 PRB, numerology 1 (30 kHz SCS)
+  traffic_models:       # per-UE UDP/CBR flows; PDB = packet delay budget of the 5QI
+    embb:  {fiveqi: 8,  priority: 80, pdb_ms: 300, pkt_bytes: 1200, rate_mbps: 20.0}
+    urllc: {fiveqi: 82, priority: 19, pdb_ms: 10,  pkt_bytes: 200,  rate_mbps: 1.6}
+    mmtc:  {fiveqi: 9,  priority: 90, pdb_ms: 300, pkt_bytes: 100,  rate_mbps: 0.08}
+  mixed_split: "50% eMBB / 25% URLLC / 25% mMTC"
+modes:
+  smoke: {simTime: 1.0, warmup: 0.3, seeds: [1], grid_step: 0.5, scenarios: [S1_low_mixed]}
+  quick: {simTime: 3.0, warmup: 1.0, seeds: [1], grid_step: 0.5, scenarios: [S1_low_mixed, S2_med_mixed, S4_embb_only, S5_urllc_only, S7_cell_edge, S8_near_los, S9_mobility]}
+  full:  {simTime: 5.0, warmup: 1.0, seeds: [1, 2, 3], grid_step: 0.1, refine_step: 0.05}
+scenarios:
+  - {name: S1_low_mixed,   group: density, numUes: 15, traffic: mixed, channel: uma_nlos, dmin: 35,  dmax: 300, speed: 1.0}
+  - {name: S2_med_mixed,   group: density, numUes: 40, traffic: mixed, channel: uma_nlos, dmin: 35,  dmax: 300, speed: 1.0}
+  - {name: S3_high_mixed,  group: density, numUes: 80, traffic: mixed, channel: uma_nlos, dmin: 35,  dmax: 300, speed: 1.0}
+  - {name: S4_embb_only,   group: traffic, numUes: 30, traffic: embb,  channel: uma_nlos, dmin: 35,  dmax: 300, speed: 1.0}
+  - {name: S5_urllc_only,  group: traffic, numUes: 60, traffic: urllc, channel: uma_nlos, dmin: 35,  dmax: 300, speed: 1.0}
+  - {name: S6_mmtc_only,   group: traffic, numUes: 80, traffic: mmtc,  channel: uma_nlos, dmin: 35,  dmax: 300, speed: 1.0}
+  - {name: S7_cell_edge,   group: channel, numUes: 40, traffic: mixed, channel: uma_nlos, dmin: 250, dmax: 600, speed: 1.0}
+  - {name: S8_near_los,    group: channel, numUes: 40, traffic: mixed, channel: umi_los,  dmin: 20,  dmax: 120, speed: 1.0}
+  - {name: S9_mobility,    group: channel, numUes: 40, traffic: mixed, channel: uma_nlos, dmin: 35,  dmax: 300, speed: 15.0}

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Compiled stand-in simulator (rebuild: g++ -O2 -std=c++17 -o sim/nrsim sim/nrsim.cc)
+sim/nrsim
+
+# Logs and scratch output
+*.log
+nohup.out
+*.bak
+*.tmp
+
+# ns-3 / 5G-LENA trees and build output (setup.sh clones these to ~/ns-3-nr, outside the repo)
+ns-3-dev/
+ns-3-nr/
+cmake-cache/
+build/
+
+# Editor / OS / tooling
+.vscode/
+.idea/
+.DS_Store
+.claude/
+
+# Note: results/ (CSV, tables, figures, archive_quick_grid0.2/) is intentionally NOT ignored.
